@@ -9,13 +9,12 @@ class userDatabaseHelper {
   static Future<void> createUser(UserModel user) async {
     final db = await DatabaseHelper.instance.database;
     var username= user.username;
-    var email = user.email;
     var key = utf8.encode(user.password.toString());
     var digest = sha1.convert(key);
     user.password = digest.toString();
 
     List<Map> list = await db!.query('$tableName',
-        where: 'username = ? or email = ?', whereArgs: [username, email]);
+        where: 'username = ? or email = ?', whereArgs: [username]);
 
     if (list.isEmpty) {
       await db.insert(tableName, user.toMap());
@@ -41,7 +40,7 @@ class userDatabaseHelper {
 
   static Future<UserModel> getUsersById(int userId) async {
     print(userId);
-    UserModel user = UserModel(name: '', nim: '', username: '', email: '', password: '');
+    UserModel user = UserModel(username: '', password: '');
     final db = await DatabaseHelper.instance.database;
     List<Map> list =
         await db!.query('$tableName', where: 'id = ?', whereArgs: [userId]);

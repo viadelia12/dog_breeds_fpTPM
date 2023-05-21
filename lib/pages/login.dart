@@ -1,4 +1,5 @@
 import 'package:finalproject/components/navbar.dart';
+import 'package:finalproject/service/user_database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,35 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  late SharedPreferences prefs;
-
-  @override
-  void initState() {
-    super.initState();
-    checkIsLogin();
-  }
-
-  void checkIsLogin() async {
-    prefs = await SharedPreferences.getInstance();
-
-    bool? isLogin = (prefs.getString('username') != null) ? true : false;
-
-    if (isLogin && mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => NavBar(),
-          ),
-          (route) => false);
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-  }
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +76,34 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 30),
             MaterialButton(
               onPressed: () async {
-                
+                try {
+                  var listUser =
+                      await userDatabaseHelper.getUserByUsernameAndPassword(
+                          _usernameController.text, _passwordController.text);
+                  if (listUser.length > 0) {
+                    final snackbar = SnackBar(
+                      content: Text('Login Success'),
+                    );
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                    pref.setString('username', listUser[0].username!);
+                    pref.setInt('userId', listUser[0].id!);
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            "Sorry, we're working on getting this fixed ASAP"),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  setState(() {
+                    error = 'Username or Password is wrong';
+                  });
+                }
               },
               height: 45,
               color: Color(0xffAD8B73),

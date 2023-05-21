@@ -49,12 +49,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-            _nameField(),
-            SizedBox(height: 20),
-            _nimField(),
-            SizedBox(height: 20),
-            _emailField(),
-            SizedBox(height: 20),
             _usernameField(),
             SizedBox(height: 20),
             _passwordField(),
@@ -280,10 +274,7 @@ Widget _emailField() {
   Widget _registerButton() {
     return MaterialButton(
       onPressed: () async {
-        if (_nameController.text.isEmpty ||
-            _nimController.text.isEmpty ||
-            _usernameController.text.isEmpty ||
-            _emailController.text.isEmpty ||
+        if (_usernameController.text.isEmpty ||
             _passwordController.text.isEmpty) {
           setState(() {
             error = "Please fill all the fields";
@@ -291,12 +282,7 @@ Widget _emailField() {
           return;
         }
 
-        UserModel user = UserModel(
-            name: _nameController.text,
-            nim: _nimController.text,
-            username: _usernameController.text,
-            email: _emailController.text,
-            password: _passwordController.text);
+        UserModel user = UserModel(username: _usernameController.text, password: _passwordController.text);
         try {
           await userDatabaseHelper.createUser(user);
         } catch (e) {
