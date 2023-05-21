@@ -20,6 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF9F5E7),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -162,13 +163,20 @@ class _RegisterPageState extends State<RegisterPage> {
       onPressed: () async {
         if (_usernameController.text.isEmpty ||
             _passwordController.text.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Data harus diisi terlebih dahulu"),
-              duration: Duration(seconds: 1),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content: const Text('Please fill all data first!'),
+              actions: <TextButton>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
             ),
           );
-          return;
         }
 
         UserModel user = UserModel(
@@ -176,9 +184,45 @@ class _RegisterPageState extends State<RegisterPage> {
             password: _passwordController.text);
         try {
           await userDatabaseHelper.createUser(user);
+          var listUser = await userDatabaseHelper.getUserByUsernameAndPassword(
+              _usernameController.text, _passwordController.text);
+          if (listUser.length > 0) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                content: const Text('Username already used!'),
+                actions: <TextButton>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _usernameController.clear();
+                      _passwordController.clear();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            Navigator.popAndPushNamed(context, "/login");
+          }
         } catch (e) {
           setState(() {
             error = e.toString();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                content: Text('$error'),
+                actions: <TextButton>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
           });
           return;
         }

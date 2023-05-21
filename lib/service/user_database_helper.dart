@@ -14,7 +14,7 @@ class userDatabaseHelper {
     user.password = digest.toString();
 
     List<Map> list = await db!.query('$tableName',
-        where: 'username = ? or email = ?', whereArgs: [username]);
+        where: 'username = ?', whereArgs: [username]);
 
     if (list.isEmpty) {
       await db.insert(tableName, user.toMap());

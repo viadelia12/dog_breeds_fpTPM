@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:finalproject/pages/dog_details.dart';
 import 'package:finalproject/service/base_network.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +15,44 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late SharedPreferences prefs;
   String search = "";
+  List<String> listWaktuBagian = <String>['WIB', 'WITA', 'WIT', 'UTC'];
+  late String waktuBagian = listWaktuBagian.first;
+  late String timeString;
+  late Timer timer;
 
   @override
   void initState() {
+    timeString = _formatDateTime(DateTime.now());
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
-    initial();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  void _getTime() {
+    DateTime waktu;
+    if (waktuBagian == 'WITA') {
+      waktu = DateTime.now().add(const Duration(hours: 1));
+    } else if (waktuBagian == 'WIT') {
+      waktu = DateTime.now().add(const Duration(hours: 2));
+    } else if (waktuBagian == 'UTC') {
+      waktu = DateTime.now().toUtc();
+    } else {
+      waktu = DateTime.now();
+    }
+
+    final String formattedDateTime = _formatDateTime(waktu);
+    setState(() {
+      timeString = formattedDateTime;
+    });
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    return DateFormat('kk:mm:ss').format(dateTime);
   }
 
   void initial() async {
@@ -39,6 +74,54 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              width: MediaQuery.of(context).size.width/1.6,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xffF5EBEB),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      timeString,
+                      style:
+                          const TextStyle(fontSize: 25, fontFamily: 'Poppins'),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 8, left: 8),
+                    child: DropdownButton<String>(
+                      underline: Container(),
+                      value: waktuBagian,
+                      elevation: 16,
+                      onChanged: (String? value) {
+                        setState(() {
+                          waktuBagian = value!;
+                        });
+                      },
+                      items: listWaktuBagian
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                                fontSize: 25, fontFamily: 'Poppins'),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             searchField(),
             SizedBox(height: 20),
             Text(

@@ -76,6 +76,23 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 30),
             MaterialButton(
               onPressed: () async {
+                if (_usernameController.text.isEmpty ||
+                    _passwordController.text.isEmpty) {
+                  return showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      content: const Text('Please fill all data first!'),
+                      actions: <TextButton>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 try {
                   var listUser =
                       await userDatabaseHelper.getUserByUsernameAndPassword(
@@ -89,23 +106,23 @@ class _LoginPageState extends State<LoginPage> {
                     pref.setString('username', listUser[0].username!);
                     pref.setInt('userId', listUser[0].id!);
                     ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NavBar()));
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                            "Sorry, we're working on getting this fixed ASAP"),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                    Navigator.popAndPushNamed(context, "/navbar");
                   }
                 } catch (e) {
                   setState(() {
-                    const SnackBar(
-                      content: Text(
-                          "Sorry, we're working on getting this fixed ASAP"),
-                      duration: Duration(seconds: 1),
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        content: const Text('Username/password is wrong'),
+                        actions: <TextButton>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
                     );
                   });
                 }
