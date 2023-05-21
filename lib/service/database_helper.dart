@@ -2,7 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "woofyeGames.db";
+  static final _databaseName = "meowy.db";
   static final _databaseVersion = 1;
 
   DatabaseHelper._internal();
@@ -28,11 +28,10 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE User(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        nim TEXT,
         username TEXT,
         email TEXT,
         password TEXT,
+        plan TEXT
       )
     ''');
   }

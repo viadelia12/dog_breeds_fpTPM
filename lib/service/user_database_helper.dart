@@ -8,7 +8,7 @@ class userDatabaseHelper {
 
   static Future<void> createUser(UserModel user) async {
     final db = await DatabaseHelper.instance.database;
-    var username= user.username;
+    var username = user.username;
     var key = utf8.encode(user.password.toString());
     var digest = sha1.convert(key);
     user.password = digest.toString();

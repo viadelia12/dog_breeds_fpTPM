@@ -89,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                     pref.setString('username', listUser[0].username!);
                     pref.setInt('userId', listUser[0].id!);
                     ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NavBar()));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -101,7 +102,11 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 } catch (e) {
                   setState(() {
-                    error = 'Username or Password is wrong';
+                    const SnackBar(
+                      content: Text(
+                          "Sorry, we're working on getting this fixed ASAP"),
+                      duration: Duration(seconds: 1),
+                    );
                   });
                 }
               },

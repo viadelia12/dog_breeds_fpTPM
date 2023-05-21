@@ -120,9 +120,100 @@ class _ConvertPageState extends State<ConvertPage> {
             SizedBox(height: 20),
             Row(
               children: [
-                _inputMoneyField(),
-                SizedBox(width: 0),
+                SizedBox(
+                      width: MediaQuery.of(context).size.width / 1.4,
+                      child: TextField(
+                        onChanged: onInputChanged,
+                        controller: _moneyController,
+                        decoration: const InputDecoration(
+                          filled: true,
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                            fontFamily: 'Poppins',
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Colors.teal,
+                            ), //<-- SEE HERE
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Colors.teal,
+                            ), //<-- SEE HERE
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                DropdownButton(
+                  value: currencyInput,
+                  items: const <String>['IDR', 'USD', 'EUR']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: onCurrencyInputChanged,
+                )
               ],
+            ),
+            SizedBox(height: 20),
+            Icon(Icons.keyboard_arrow_down_outlined),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.teal),
+                    borderRadius: BorderRadius.circular(6),
+                    color: Colors.grey.shade300,
+                  ),
+                  width: MediaQuery.of(context).size.width / 1.4,
+                  height: 55,
+                  child: Text(
+                    result,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                DropdownButton(
+                  value: currencyOutput,
+                  items: const <String>['IDR', 'USD', 'EUR']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: onCurrencyOutputChanged,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: convert,
+              child: const Text('Konversi'),
             )
           ],
         ),

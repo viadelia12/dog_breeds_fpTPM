@@ -1,6 +1,3 @@
-import 'package:finalproject/components/navbar.dart';
-import 'package:finalproject/pages/homepage.dart';
-import 'package:finalproject/pages/login.dart';
 import 'package:finalproject/pages/splashscreen.dart';
 import 'package:finalproject/routes/route.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.generateRoute,
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }

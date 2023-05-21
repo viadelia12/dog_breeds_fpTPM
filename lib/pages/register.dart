@@ -11,9 +11,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _nimController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -80,117 +77,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _nameField() {
-    return TextField(
-      controller: _nameController,
-      cursorColor: Color(0xffAD8B73),
-      decoration: InputDecoration(
-        labelText: 'Name',
-        hintText: 'name',
-        labelStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 14.0,
-          fontWeight: FontWeight.w400,
-        ),
-        hintStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 14.0,
-        ),
-        prefixIcon: Icon(
-          Iconsax.user,
-          color: Color(0xffAD8B73),
-          size: 18,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffAD8B73), width: 1.5),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        floatingLabelStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 18.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffAD8B73), width: 1.5),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-    );
-  }
-
-  Widget _nimField() {
-    return TextField(
-      controller: _nimController,
-      cursorColor: Color(0xffAD8B73),
-      decoration: InputDecoration(
-        labelText: 'Nim',
-        hintText: 'nim',
-        labelStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 14.0,
-          fontWeight: FontWeight.w400,
-        ),
-        hintStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 14.0,
-        ),
-        prefixIcon: Icon(
-          Iconsax.user,
-          color: Color(0xffAD8B73),
-          size: 18,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffAD8B73), width: 1.5),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        floatingLabelStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 18.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffAD8B73), width: 1.5),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-    );
-  }
-
-Widget _emailField() {
-    return TextField(
-      controller: _emailController,
-      cursorColor: Color(0xffAD8B73),
-      decoration: InputDecoration(
-        labelText: 'Email',
-        hintText: 'email@gmail.com',
-        labelStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 14.0,
-          fontWeight: FontWeight.w400,
-        ),
-        hintStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 14.0,
-        ),
-        prefixIcon: Icon(
-          Iconsax.user,
-          color: Color(0xffAD8B73),
-          size: 18,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffAD8B73), width: 1.5),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        floatingLabelStyle: TextStyle(
-          color: Color(0xffAD8B73),
-          fontSize: 18.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffAD8B73), width: 1.5),
-          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
     );
@@ -276,13 +162,18 @@ Widget _emailField() {
       onPressed: () async {
         if (_usernameController.text.isEmpty ||
             _passwordController.text.isEmpty) {
-          setState(() {
-            error = "Please fill all the fields";
-          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Data harus diisi terlebih dahulu"),
+              duration: Duration(seconds: 1),
+            ),
+          );
           return;
         }
 
-        UserModel user = UserModel(username: _usernameController.text, password: _passwordController.text);
+        UserModel user = UserModel(
+            username: _usernameController.text,
+            password: _passwordController.text);
         try {
           await userDatabaseHelper.createUser(user);
         } catch (e) {
