@@ -33,7 +33,7 @@ class BaseNetwork{
 
     List<Dogs?> items = [];
     print(checkDogs);
-    if (data != null && checkDogs != "No quotes found") {
+    if (data != null && checkDogs != "No dog's breed found") {
       for (var i in data) {
         if (i != null && i['lines'] == null) {
           items.add(Dogs.fromJson(i));

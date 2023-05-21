@@ -1,4 +1,3 @@
-import 'package:finalproject/components/navbar.dart';
 import 'package:finalproject/service/user_database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -106,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                     pref.setString('username', listUser[0].username!);
                     pref.setInt('userId', listUser[0].id!);
                     ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                    Navigator.popAndPushNamed(context, "/navbar");
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/navbar', (Route<dynamic> route) => false);
                   }
                 } catch (e) {
                   setState(() {

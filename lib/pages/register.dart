@@ -190,11 +190,11 @@ class _RegisterPageState extends State<RegisterPage> {
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                content: const Text('Username already used!'),
+                content: const Text('Registration Success!'),
                 actions: <TextButton>[
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.popAndPushNamed(context, "/login");
                       _usernameController.clear();
                       _passwordController.clear();
                     },
@@ -204,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             );
           } else {
-            Navigator.popAndPushNamed(context, "/login");
+            Navigator.pop(context);
           }
         } catch (e) {
           setState(() {

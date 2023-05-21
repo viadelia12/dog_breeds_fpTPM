@@ -121,34 +121,35 @@ class _ConvertPageState extends State<ConvertPage> {
             Row(
               children: [
                 SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.4,
-                      child: TextField(
-                        onChanged: onInputChanged,
-                        controller: _moneyController,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
-                            fontFamily: 'Poppins',
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.teal,
-                            ), //<-- SEE HERE
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.teal,
-                            ), //<-- SEE HERE
-                          ),
+                  width: MediaQuery.of(context).size.width / 1.4,
+                  child: TextField(
+                    onChanged: onInputChanged,
+                    controller: _moneyController,
+                    decoration: const InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color(0xffAD8B73),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color(0xffAD8B73),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                  ),
+                ),
+                const SizedBox(width: 10),
                 DropdownButton(
+                  dropdownColor: Colors.white,
                   value: currencyInput,
                   items: const <String>['IDR', 'USD', 'EUR']
                       .map<DropdownMenuItem<String>>((String value) {
@@ -172,9 +173,9 @@ class _ConvertPageState extends State<ConvertPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.teal),
+                    border: Border.all(color: Color(0xffAD8B73)),
                     borderRadius: BorderRadius.circular(6),
-                    color: Colors.grey.shade300,
+                    color: Colors.white,
                   ),
                   width: MediaQuery.of(context).size.width / 1.4,
                   height: 55,
@@ -187,6 +188,7 @@ class _ConvertPageState extends State<ConvertPage> {
                 ),
                 const SizedBox(width: 10),
                 DropdownButton(
+                  dropdownColor: Colors.white,
                   value: currencyOutput,
                   items: const <String>['IDR', 'USD', 'EUR']
                       .map<DropdownMenuItem<String>>((String value) {
@@ -203,17 +205,18 @@ class _ConvertPageState extends State<ConvertPage> {
               ],
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                textStyle: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            MaterialButton(
               onPressed: convert,
-              child: const Text('Konversi'),
+              height: 45,
+              color: Color(0xffAD8B73),
+              child: Text(
+                "Convert",
+                style: TextStyle(color: Colors.white, fontSize: 16.0),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
             )
           ],
         ),
